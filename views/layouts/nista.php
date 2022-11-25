@@ -1,0 +1,3 @@
+{{ renderNavBar }}
+
+{{ renderPartialView }}
