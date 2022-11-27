@@ -8,6 +8,7 @@ use app\models\LoginModel;
 use app\models\RegistrationModel;
 use app\core\DbConnection;
 use app\models\UserModel;
+use app\models\UserRolesModel;
 
 class AuthController extends Controller
 {
@@ -28,6 +29,7 @@ class AuthController extends Controller
     public function loginProcess()
     {
         $login = new LoginModel();
+        $user_roles = new UserRolesModel();
         $login->mapData($this->router->request->all());
         $login->validate();
         if ($login->errors)
@@ -38,6 +40,8 @@ class AuthController extends Controller
         if ($login->login())
         {
             Application::$app->session->set(Application::$app->session->USER_SESSION, $login->email);
+           
+            
           
             
         $connection = new DbConnection();
@@ -55,13 +59,32 @@ class AuthController extends Controller
            $resultArray[] = $result;
        }
 
+       $rola = $connection->con()->query("
        
+       SELECT id_role from user_roles 
+       INNER JOIN users on user_roles.id_user = users.user_id
+       WHERE users.email = '$email';
+       
+       
+       "
+    );
 
+  
+    $pravaRola = $rola->fetch_assoc()["id_role"];
+
+ 
      
        if($resultArray[0]['is_survey'] == 'yes'){
         
 
-       
+        if($pravaRola == '2'){
+
+            header("location:" . "/home");
+            exit;
+        }
+
+        
+
 
         $kveri = $connection->con()->query("
         SELECT user_id from users  
@@ -81,6 +104,7 @@ class AuthController extends Controller
 
 
        }
+        
         else{
 
             header("location:" . "/home");
