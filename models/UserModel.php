@@ -7,9 +7,9 @@ use app\core\DbModel;
 class UserModel extends DbModel
 {
     public $age;
-    public string $user_id;
-    public string $email;
-    public string $password;
+    public  $user_id;
+    public  $email;
+    public  $password;
     public $role_names;
 
     public function rules(): array

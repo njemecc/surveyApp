@@ -6,6 +6,8 @@ use app\core\Application;
 use app\core\Controller;
 use app\models\LoginModel;
 use app\models\RegistrationModel;
+use app\core\DbConnection;
+use app\models\UserModel;
 
 class AuthController extends Controller
 {
@@ -36,7 +38,56 @@ class AuthController extends Controller
         if ($login->login())
         {
             Application::$app->session->set(Application::$app->session->USER_SESSION, $login->email);
+          
+            
+        $connection = new DbConnection();
+        $email =  Application::$app->session->get(Application::$app->session->USER_SESSION);
+
+        
+      $Dbquery = $connection->con()->query("
+        SELECT is_survey from users 
+        WHERE users.email = '$email';
+        ");
+      
+       $resultArray = [];
+
+       while ($result = $Dbquery->fetch_assoc()) {
+           $resultArray[] = $result;
+       }
+
+       
+
+     
+       if($resultArray[0]['is_survey'] == 'yes'){
+        
+
+       
+
+        $kveri = $connection->con()->query("
+        SELECT user_id from users  
+        where users.email = '$email';
+        ");
+
+       
+      $user_id = $kveri->fetch_assoc()['user_id'];
+ 
+
+        header("location:" . "/chartAverage");
+       
+        $query =  $connection->con()->query("
+        UPDATE user_roles SET id_role = '3'
+        WHERE user_roles.id_user = '$user_id';
+        ");
+
+
+       }
+        else{
+
             header("location:" . "/home");
+        }
+    
+            
+
         }
 
         Application::$app->session->setFlash(Application::$app->session->FLASH_MESSAGE_ERROR, "Login nije uspesno prosao!");

@@ -36,6 +36,14 @@ abstract class Model
                         $this->addErrors($attribute, $rule);
                     }
                 }
+
+                if ($rule === self::RULE_EMAIL_UNIQUE)
+                {
+                    if (!filter_var($value, FILTER_VALIDATE_EMAIL))
+                    {
+                        $this->addErrors($attribute, $rule);
+                    }
+                }
             }
         }
     }

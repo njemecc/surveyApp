@@ -184,21 +184,6 @@ class FormController extends Controller
   }
  }
 
- public function chartAverage()
- {
-
-
-  $this->router->view("averageChart","nista",null);
-
-
-
- }
-
-
-public function chartAge()
-{
-  $this->router->view("ageChart","nista",null);
-}
 
 public function getAges()
 {

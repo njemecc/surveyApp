@@ -17,14 +17,23 @@ abstract class DbModel extends Model
 
     public function create()
     {
+    
+      
+
         $tableName = $this->tableName();
         $attributes = $this->attributes();
+
+       
+
         $values = array_map(fn($attr) => ":$attr", $attributes);
         $sqlString = "INSERT INTO $tableName (" . implode(',', $attributes) . ") VALUES (" . implode(',', $values) . ")";
 
+      
         foreach ($attributes as $attribute) {
             $sqlString = str_replace(":$attribute", is_numeric($this->{$attribute}) ? $this->{$attribute} : '"' . $this->{$attribute} . '"', $sqlString);
         }
+
+       
 
         $this->db->con()->query($sqlString);
     }

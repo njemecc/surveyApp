@@ -3,6 +3,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use app\controllers\AdministrationController;
 use app\controllers\AuthController;
+use app\controllers\ChartController;
 use app\controllers\FormController;
 use app\core\Application;
 
@@ -15,10 +16,10 @@ $app->router->get("/registration", [AuthController::class, 'registration']);
 $app->router->get("/accessDenied", [AuthController::class, 'accessDenied']);
 $app->router->get("/logout", [AuthController::class, 'logout']);
 $app->router->get("/form", [FormController::class, 'index']);
-$app->router->get("/chartAverage",[FormController::class,"chartAverage"]);
+$app->router->get("/chartAverage",[ChartController::class,"chartAverage"]);
 $app->router->get("/api/userList",[AdministrationController::class,"ApiuserList"]);
 $app->router->get("/userList",[AdministrationController::class,"userList"]);
-$app->router->get("/chartAge",[FormController::class,"chartAge"]);
+$app->router->get("/chartAge",[ChartController::class,"chartAge"]);
 $app->router->get("/api/getAges",[FormController::class,"getAges"]);
 
 $app->router->post("/registrationProcess", [AuthController::class, 'registrationProcess']);

@@ -20,19 +20,50 @@ class RegistrationModel extends DbModel
 
     public function registration()
     {
-        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-        $this->create();
-
         $user = new UserModel();
         $role = new RoleModel();
         $userRoles = new UserRolesModel();
-
         $user->mapData($user->one("email = '$this->email'"));
-        $role->mapData($role->one("role_name = 'registered'"));
+        
+      $nesto =  $user->one("email = '$this->email'")?? null;
 
-        $userRoles->id_user = $user->user_id;
-        $userRoles->id_role = $role->role_id;
-        $userRoles->create();
+      $BazaEmail = $nesto['email']?? '';
+      
+        if($BazaEmail == null){
+
+            $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+            $this->create();
+            
+            $user2 = new UserModel();
+            $user2->mapData($user2->one("email = '$this->email'"));
+        
+
+            $role->mapData($role->one("role_name = 'registered'"));
+
+            $email = $user->email;
+    
+    
+    
+    
+            
+    
+           
+    
+    
+            $userRoles->id_user = $user2->user_id;
+
+          
+
+            $userRoles->id_role = $role->role_id;
+            $userRoles->create();
+
+        }else{
+            echo "Email se vec koristi";
+        }
+
+
+
+
     }
 
     public function tableName()
